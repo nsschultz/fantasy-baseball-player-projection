@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: player-projection
+  namespace: baseball
+spec:
+  selector:
+    app: player-projection
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: player-projection
