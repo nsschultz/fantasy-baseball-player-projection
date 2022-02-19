@@ -7,7 +7,7 @@ using FantasyBaseball.Common.Enums;
 namespace FantasyBaseball.PlayerProjectionService.CsvMaps
 {
     /// <summary>Mapper for BHQ's batting file.</summary>
-    public class BhqBattingStatsMap : ClassMap<BhqBattingStats>
+    public class BhqBattingStatsMap : ClassMap<ProjectionBattingStats>
     {
         /// <summary>Creates a new instance of the mapper.</summary>
         public BhqBattingStatsMap()

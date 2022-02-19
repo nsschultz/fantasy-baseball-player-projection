@@ -6,7 +6,7 @@ using FantasyBaseball.Common.Models;
 namespace FantasyBaseball.PlayerProjectionService.Models
 {
     /// <summary>A marker object for breaking up the mappers.</summary>
-    public class BhqBattingStats : BaseballPlayer 
+    public class ProjectionBattingStats : BaseballPlayer 
     { 
         /// <summary>Batting Stats (Projected) for a given player.</summary>
         [JsonIgnore(Condition = JsonIgnoreCondition.Always)] public BattingStats ProjectedBattingStats

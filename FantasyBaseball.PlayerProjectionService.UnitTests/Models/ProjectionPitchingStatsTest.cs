@@ -3,11 +3,11 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerProjectionService.Models.UnitTests
 {
-    public class BhqPitchingStatsTest
+    public class ProjectionPitchingStatsTest
     {
         [Fact] public void ProjectedPitchingStatsTest()
         {
-            var player = new BhqPitchingStats();
+            var player = new ProjectionPitchingStats();
             AssertStats(player.ProjectedPitchingStats, 0, 0, 0);
             player.ProjectedPitchingStats.InningsPitched = 100;
             player.ProjectedPitchingStats.EarnedRuns = 50;
@@ -20,7 +20,7 @@ namespace FantasyBaseball.PlayerProjectionService.Models.UnitTests
 
         [Fact] public void YearToDatePitchingStatsTest()
         {
-            var player = new BhqPitchingStats();
+            var player = new ProjectionPitchingStats();
             AssertStats(player.YearToDatePitchingStats, 0, 0, 0);
             player.YearToDatePitchingStats.InningsPitched = 100;
             player.YearToDatePitchingStats.EarnedRuns = 50;

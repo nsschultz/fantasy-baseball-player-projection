@@ -15,7 +15,7 @@ namespace FantasyBaseball.PlayerProjectionService
     /// <summary>The class that sets up all of the configuration for the service.</summary>
     public class Startup
     {        
-        private const string SwaggerBasePath = "api/v1/bhq-stats";
+        private const string SwaggerBasePath = "api/v1/projection";
         private const string SwaggerTitle = "FantasyBaseball.PlayerProjectionService";
         private const string SwaggerVersion = "v1";
 

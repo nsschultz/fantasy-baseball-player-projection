@@ -31,14 +31,14 @@ namespace FantasyBaseball.PlayerProjectionService.Services.UnitTets
         {
             var fileReader = new Mock<IFileReader>();
             fileReader.Setup(o => o.ReadLines()).Returns(Task.FromResult(PITCHER_RESULTS));
-            await Assert.ThrowsAsync<HeaderValidationException>(() => new CsvFileReaderService().ReadCsvData<BhqBattingStats>(fileReader.Object));
+            await Assert.ThrowsAsync<HeaderValidationException>(() => new CsvFileReaderService().ReadCsvData<ProjectionBattingStats>(fileReader.Object));
         }
 
         [Fact] public async Task ReadCsvDataValidBatterTest() 
         {
             var fileReader = new Mock<IFileReader>();
             fileReader.Setup(o => o.ReadLines()).Returns(Task.FromResult(BATTER_RESULTS));
-            var results = await new CsvFileReaderService().ReadCsvData<BhqBattingStats>(fileReader.Object);
+            var results = await new CsvFileReaderService().ReadCsvData<ProjectionBattingStats>(fileReader.Object);
             Assert.Single(results);
             Assert.Equal(1234, results.First().BhqId);
         }
@@ -47,14 +47,14 @@ namespace FantasyBaseball.PlayerProjectionService.Services.UnitTets
         {
             var fileReader = new Mock<IFileReader>();
             fileReader.Setup(o => o.ReadLines()).Returns(Task.FromResult(BATTER_RESULTS));
-            await Assert.ThrowsAsync<HeaderValidationException>(() => new CsvFileReaderService().ReadCsvData<BhqPitchingStats>(fileReader.Object));
+            await Assert.ThrowsAsync<HeaderValidationException>(() => new CsvFileReaderService().ReadCsvData<ProjectionPitchingStats>(fileReader.Object));
         }
 
         [Fact] public async Task ReadCsvDataValidPitcherTest() 
         {
             var fileReader = new Mock<IFileReader>();
             fileReader.Setup(o => o.ReadLines()).Returns(Task.FromResult(PITCHER_RESULTS));
-            var results = await new CsvFileReaderService().ReadCsvData<BhqPitchingStats>(fileReader.Object);
+            var results = await new CsvFileReaderService().ReadCsvData<ProjectionPitchingStats>(fileReader.Object);
             Assert.Single(results);
             Assert.Equal(1234, results.First().BhqId);
         }

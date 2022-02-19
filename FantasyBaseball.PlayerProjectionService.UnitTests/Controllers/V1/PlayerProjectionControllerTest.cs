@@ -13,35 +13,35 @@ using Xunit;
 
 namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
 {
-    public class BhqStatsControllerTest
+    public class PlayerProjectionControllerTest
     {
         [Fact] public async Task GetBattersTest() 
         {
-            var returnData = new List<BhqBattingStats> { new BhqBattingStats() };
+            var returnData = new List<ProjectionBattingStats> { new ProjectionBattingStats() };
             var section = new Mock<IConfigurationSection>();
             section.Setup(o => o.Value).Returns("test.csv");
             var config = new Mock<IConfiguration>();
             config.Setup(o => o.GetSection("CsvFiles:BatterFile")).Returns(section.Object);
             var service = new Mock<ICsvFileReaderService>();
-            service.Setup(o => o.ReadCsvData<BhqBattingStats>(It.IsAny<FileReader>())).Returns(Task.FromResult(returnData));
-            Assert.NotEmpty(await new BhqStatsController(service.Object, null, config.Object).GetBatters());
+            service.Setup(o => o.ReadCsvData<ProjectionBattingStats>(It.IsAny<FileReader>())).Returns(Task.FromResult(returnData));
+            Assert.NotEmpty(await new PlayerProjectionController(service.Object, null, config.Object).GetBatters());
         }
 
         [Fact] public async Task GetPitchersTest() 
         {
-            var returnData = new List<BhqPitchingStats> { new BhqPitchingStats() };
+            var returnData = new List<ProjectionPitchingStats> { new ProjectionPitchingStats() };
             var section = new Mock<IConfigurationSection>();
             section.Setup(o => o.Value).Returns("test.csv");
             var config = new Mock<IConfiguration>();
             config.Setup(o => o.GetSection("CsvFiles:PitcherFile")).Returns(section.Object);
             var service = new Mock<ICsvFileReaderService>();
-            service.Setup(o => o.ReadCsvData<BhqPitchingStats>(It.IsAny<FileReader>())).Returns(Task.FromResult(returnData));
-            Assert.NotEmpty(await new BhqStatsController(service.Object, null, config.Object).GetPitchers());
+            service.Setup(o => o.ReadCsvData<ProjectionPitchingStats>(It.IsAny<FileReader>())).Returns(Task.FromResult(returnData));
+            Assert.NotEmpty(await new PlayerProjectionController(service.Object, null, config.Object).GetPitchers());
         }
 
         [Fact] public async Task UploadBattersTest() 
         {
-            var returnData = new List<BhqBattingStats> { new BhqBattingStats() };
+            var returnData = new List<ProjectionBattingStats> { new ProjectionBattingStats() };
             var section = new Mock<IConfigurationSection>();
             section.Setup(o => o.Value).Returns("batters.csv");
             var config = new Mock<IConfiguration>();
@@ -49,11 +49,11 @@ namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
             var uploadService = new Mock<ICsvFileUploaderService>();
             uploadService.Setup(o => o.UploadFile(It.IsAny<FormFileReader>(), "batters.csv")).Returns(Task.FromResult(0));
             var readService = new Mock<ICsvFileReaderService>();
-            readService.Setup(o => o.ReadCsvData<BhqBattingStats>(It.IsAny<FormFileReader>())).Returns(Task.FromResult(returnData));
+            readService.Setup(o => o.ReadCsvData<ProjectionBattingStats>(It.IsAny<FormFileReader>())).Returns(Task.FromResult(returnData));
             var request = new Mock<HttpRequest>();
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Request).Returns(request.Object);
-            var controller = new BhqStatsController(readService.Object, uploadService.Object, config.Object);
+            var controller = new PlayerProjectionController(readService.Object, uploadService.Object, config.Object);
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext.Object };
             await controller.UploadBatterFile();
             readService.VerifyAll();
@@ -63,11 +63,11 @@ namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
         [Fact] public async Task UploadBattersExceptionTest()
         {
             var readService = new Mock<ICsvFileReaderService>();
-            readService.Setup(o => o.ReadCsvData<BhqBattingStats>(It.IsAny<FormFileReader>())).ThrowsAsync(new Exception("Bad Request"));
+            readService.Setup(o => o.ReadCsvData<ProjectionBattingStats>(It.IsAny<FormFileReader>())).ThrowsAsync(new Exception("Bad Request"));
             var request = new Mock<HttpRequest>().Object;
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Request).Returns(request);
-            var controller = new BhqStatsController(readService.Object, null, null);
+            var controller = new PlayerProjectionController(readService.Object, null, null);
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext.Object };
             await Assert.ThrowsAsync<BadRequestException>(() => controller.UploadBatterFile());
             readService.VerifyAll();
@@ -75,7 +75,7 @@ namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
 
         [Fact] public async Task UploadPitchersTest() 
         {
-            var returnData = new List<BhqPitchingStats> { new BhqPitchingStats() };
+            var returnData = new List<ProjectionPitchingStats> { new ProjectionPitchingStats() };
             var section = new Mock<IConfigurationSection>();
             section.Setup(o => o.Value).Returns("pitchers.csv");
             var config = new Mock<IConfiguration>();
@@ -83,11 +83,11 @@ namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
             var uploadService = new Mock<ICsvFileUploaderService>();
             uploadService.Setup(o => o.UploadFile(It.IsAny<FormFileReader>(), "pitchers.csv")).Returns(Task.FromResult(0));
             var readService = new Mock<ICsvFileReaderService>();
-            readService.Setup(o => o.ReadCsvData<BhqPitchingStats>(It.IsAny<FormFileReader>())).Returns(Task.FromResult(returnData));
+            readService.Setup(o => o.ReadCsvData<ProjectionPitchingStats>(It.IsAny<FormFileReader>())).Returns(Task.FromResult(returnData));
             var request = new Mock<HttpRequest>().Object;
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Request).Returns(request);
-            var controller = new BhqStatsController(readService.Object, uploadService.Object, config.Object);
+            var controller = new PlayerProjectionController(readService.Object, uploadService.Object, config.Object);
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext.Object };
             await controller.UploadPitcherFile();
             readService.VerifyAll();
@@ -97,11 +97,11 @@ namespace FantasyBaseball.PlayerProjectionService.Controllers.V1.UnitTests
         [Fact] public async Task UploadPitchersExceptionTest()
         {
             var readService = new Mock<ICsvFileReaderService>();
-            readService.Setup(o => o.ReadCsvData<BhqPitchingStats>(It.IsAny<FormFileReader>())).ThrowsAsync(new Exception("Bad Request"));
+            readService.Setup(o => o.ReadCsvData<ProjectionPitchingStats>(It.IsAny<FormFileReader>())).ThrowsAsync(new Exception("Bad Request"));
             var request = new Mock<HttpRequest>().Object;
             var httpContext = new Mock<HttpContext>();
             httpContext.SetupGet(a => a.Request).Returns(request);
-            var controller = new BhqStatsController(readService.Object, null, null);
+            var controller = new PlayerProjectionController(readService.Object, null, null);
             controller.ControllerContext = new ControllerContext() { HttpContext = httpContext.Object };
             await Assert.ThrowsAsync<BadRequestException>(() => controller.UploadPitcherFile());
             readService.VerifyAll();
