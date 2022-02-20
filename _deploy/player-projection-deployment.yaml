@@ -1,0 +1,36 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: player-projection
+  namespace: baseball
+  labels:
+    app: player-projection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: player-projection
+  template:
+    metadata:
+      labels:
+        app: player-projection
+    spec:
+      containers:
+      - name: player-projection
+        image: nschultz/fantasy-baseball-player-projection:{{version}}
+        volumeMounts:
+        - name: player-projection-data-volume
+          mountPath: "/app/data"
+        ports:
+          - name: web
+            containerPort: 8080
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+      volumes:
+      - name: player-projection-data-volume
+        persistentVolumeClaim:
+          claimName: player-projection-data-claim

@@ -1,0 +1,9 @@
+# compiled files
+bin/
+obj/
+# test data
+bak/
+libs/
+reports/
+# vs code files
+.vscode/
